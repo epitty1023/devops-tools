@@ -5,7 +5,7 @@
 
   "Parameters" : {
     "InstanceType" : {
-      "Description" : "WebServer EC2 instance type",
+      "Description" : "PuppetServer EC2 instance type",
       "Type" : "String",
       "Default" : "t2.medium",
       "AllowedValues" : [ "t2.micro", "t2.small", "t2.medium", "m3.medium",
@@ -69,7 +69,7 @@
 	    "UserName" : { "Ref" : "User" }
 	  }
     },
-    "WebServer" : {
+    "PuppetServer" : {
       "Type" : "AWS::EC2::Instance",
       "DependsOn" : [ "GatewayToInternet" ],
       "Metadata" : {
@@ -95,9 +95,12 @@
 		  "#!/bin/bash -v\n",
 
 		  "yum update -y aws-cfn-bootstrap\n",
+      "yum install -y curl\n",
+      "yum install -y wget\n",
+      "yum install -y git\n",
 
 		  "# Install Packages\n",
-		  "/opt/aws/bin/cfn-init -v -s ", { "Ref" : "AWS::StackName" }, " -r PuppetmasterServer ",
+		  "/opt/aws/bin/cfn-init -v -s ", { "Ref" : "AWS::StackName" }, " -r PuppetServer ",
 		  "    --access-key ", { "Ref" : "HostKeys" },
 		  "    --secret-key ", { "Fn::GetAtt" : [ "HostKeys", "SecretAccessKey" ]},
 		  "    --region ", { "Ref" : "AWS::Region" }, " || error_exit 'Failed to run cfn-init'\n",
@@ -117,8 +120,6 @@
 		  "# Move Ruby 1.9.3 to Default Ruby\n",
 		    "ln -s /usr/bin/ruby1.9 /usr/bin/ruby\n",
 		    "ln -s /usr/bin/gem1.9 /usr/bin/gem\n"
-      
-      "#Install PuppetMaster files and dependencies"
 
 		]]}}
       }
@@ -231,7 +232,7 @@
 
   "Outputs" : {
     "Instance" : {
-      "Value" : { "Fn::GetAtt" : [ "WebServer", "PublicDnsName" ] },
+      "Value" : { "Fn::GetAtt" : [ "PuppetServer", "PublicDnsName" ] },
       "Description" : "DNS Name of the newly created EC2 instance"
     }
   }
