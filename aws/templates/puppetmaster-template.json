@@ -17,6 +17,7 @@
 
     "KeyName" : {
       "Type" : "String",
+      "Default"  : "puppetmaster",
       "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the web server"
     }
   },
@@ -119,7 +120,10 @@
 
 		  "# Move Ruby 1.9.3 to Default Ruby\n",
 		    "ln -s /usr/bin/ruby1.9 /usr/bin/ruby\n",
-		    "ln -s /usr/bin/gem1.9 /usr/bin/gem\n"
+		    "ln -s /usr/bin/gem1.9 /usr/bin/gem\n",
+
+      "# Install Puppetmaster\n",
+      "curl https://raw.githubusercontent.com/epitty1023/devops-tools/master/puppet/puppetmaster-boostrap.sh |sudo -E sh\n" 
 
 		]]}}
       }
@@ -145,7 +149,7 @@
         "Properties" : {                                                        
                 "GroupSet"                 : [ { "Ref" : "FrontendGroup" } ],   
                 "SubnetId"                 : { "Ref" : "PublicSubnet" },        
-                "Description"              : "ditc-jenkins-interface",          
+                "Description"              : "ethernet-interface",          
                 "SourceDestCheck"          : "true"                             
         }                                                                       
     },                                                                          
@@ -154,12 +158,24 @@
       "Type" : "AWS::EC2::SecurityGroup",                                       
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },                                            
-        "GroupDescription" : "Enable SSH and access",
+        "GroupDescription" : "Enable SSH and access and Puppetmaster ports",
         "SecurityGroupIngress" : [                                              
           { 
             "IpProtocol" : "tcp",
             "FromPort"   : "22",
             "ToPort"     : "22",
+            "CidrIp"     : "0.0.0.0/0"
+          },
+             { 
+            "IpProtocol" : "tcp",
+            "FromPort"   : "8140",
+            "ToPort"     : "8140",
+            "CidrIp"     : "0.0.0.0/0"
+          },
+             { 
+            "IpProtocol" : "tcp",
+            "FromPort"   : "443",
+            "ToPort"     : "443",
             "CidrIp"     : "0.0.0.0/0"
           }
         ]                                                                       
@@ -171,7 +187,7 @@
         "Properties" : {                                                        
             "EnableDnsSupport"      : "True",                                   
             "EnableDnsHostnames"    : "True",                                   
-            "CidrBlock"             : "10.50.50.0/16",                          
+            "CidrBlock"             : "172.31.0.0/16",                          
             "Tags" : [                                                          
                 { "Key" : "Application", "Value" : { "Ref" : "AWS::StackName" } },
                 { "Key" : "Network", "Value" : "Public" }                       
@@ -183,10 +199,10 @@
         "Type" : "AWS::EC2::Subnet",                                            
         "Properties" : {                                                        
             "VpcId"     : { "Ref" : "VPC" },                                    
-            "CidrBlock" : "10.50.50.0/24",                                      
+            "CidrBlock" : "172.31.16.0/24",                                      
             "Tags" : [                                                          
                 { "Key" : "Application" , "Value" : { "Ref" : "AWS::StackName" } },
-                { "Key" : "Netowrk", "Value" : "Public" }                       
+                { "Key" : "Netowrk", "Value" : "AZ1" }                       
             ]                                                                   
         }                                                                       
     },                                                                          
