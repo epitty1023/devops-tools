@@ -34,15 +34,9 @@
       "c4.xlarge"   : { "Arch" : "64" }
     },
     "AWSRegionArch2AMI" : {
-      "us-east-1"      : { "32" : "ami-52009e3b", "64" : "ami-56009e3f" },
-      "us-west-1"      : { "32" : "ami-0a2f024f", "64" : "ami-d62f0293" },
-      "us-west-2"      : { "32" : "ami-e030a5d0", "64" : "ami-ec30a5dc" },
-      "eu-central-1"   : { "32" : "ami-dcfa4edd", "64" : "ami-a8221fb5" },
-      "eu-west-1"      : { "32" : "ami-8aa3a8fe", "64" : "ami-029f9476" },
-      "ap-southeast-1" : { "32" : "ami-74dda626", "64" : "ami-68d8e93a" },
-      "ap-southeast-2" : { "32" : "ami-74dda626", "64" : "ami-fd9cecc7" },
-      "ap-northeast-1" : { "32" : "ami-dcfa4edd", "64" : "ami-cbf90ecb" },
-      "sa-east-1"      : { "32" : "ami-dcfa4edd", "64" : "ami-b52890a8" }
+      "us-east-1"      : { "32" : "ami-94cf1cfd", "64" : "ami-eece1d87" },
+      "us-west-1"      : { "32" : "ami-bda09ec9", "64" : "ami-afa09edb" },
+      "us-west-2"      : { "32" : "ami-c80d80f8", "64" : "ami-c00d80f0" }
     }
   },
 
