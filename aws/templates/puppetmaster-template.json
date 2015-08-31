@@ -5,7 +5,7 @@
 
   "Parameters" : {
     "InstanceType" : {
-      "Description" : "PuppetServer EC2 instance type",
+      "Description" : "PuppetServer CFT deploying in a EC2 instance type using Centos6.5",
       "Type" : "String",
       "Default" : "t2.medium",
       "AllowedValues" : [ "t2.micro", "t2.small", "t2.medium", "m3.medium",
