@@ -132,7 +132,7 @@ function pm_install {
     then
         echo "yum -y install puppet puppetserver puppet-dashboard"
     else
-        yum -y install puppet puppetserver
+        yum -y install puppet puppetserver puppet-dashboard
     fi
 }
 
