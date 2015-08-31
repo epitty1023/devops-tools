@@ -1,11 +1,11 @@
 {
   "AWSTemplateFormatVersion" : "2010-09-09",
 
-  "Description" : "Template to build a Puppetmaster Server in AWS CloudFormation CLI",
+  "Description" : "Template to build a Puppet Client Node in AWS using CloudFormation CLI",
 
   "Parameters" : {
     "InstanceType" : {
-      "Description" : "PuppetServer CFT deploying in a EC2 instance type using Centos6.5",
+      "Description" : "Puppet Client CFT deploying in a EC2 instance type using Centos6.5",
       "Type" : "String",
       "Default" : "t2.medium",
       "AllowedValues" : [ "t2.micro", "t2.small", "t2.medium", "m3.medium",
@@ -63,7 +63,7 @@
 	    "UserName" : { "Ref" : "User" }
 	  }
     },
-    "PuppetServer" : {
+    "PuppetClient" : {
       "Type" : "AWS::EC2::Instance",
       "DependsOn" : [ "GatewayToInternet" ],
       "Metadata" : {
@@ -88,7 +88,7 @@
 		"UserData" : { "Fn::Base64" : {"Fn::Join" : ["", [
 		  "#!/bin/bash -v\n",
 		  "# Install Packages\n",
-		  "/opt/aws/bin/cfn-init -v -s ", { "Ref" : "AWS::StackName" }, " -r PuppetServer ",
+		  "/opt/aws/bin/cfn-init -v -s ", { "Ref" : "AWS::StackName" }, " -r PuppetClient ",
 		  "    --access-key ", { "Ref" : "HostKeys" },
 		  "    --secret-key ", { "Fn::GetAtt" : [ "HostKeys", "SecretAccessKey" ]},
 		  "    --region ", { "Ref" : "AWS::Region" }, " || error_exit 'Failed to run cfn-init'\n",
@@ -105,8 +105,8 @@
       "sudo yum install -y nano\n",
       "sudo yum install -y htop\n",
       "sudo yum install -y wget\n",
-      "# Install Puppetmaster\n",
-      "sudo curl https://raw.githubusercontent.com/epitty1023/devops-tools/master/puppet/puppetmaster-boostrap.sh |sudo -E sh\n",
+      "# Install Puppet Client \n",
+      "sudo curl https://raw.githubusercontent.com/epitty1023/devops-tools/master/puppet/puppetclient-boostrap.sh |sudo -E sh\n",
 		  "sudo yum -y install java-1.6.0-openjdk\n",
       "sudo yum update -y aws-cfn-bootstrap\n",
 
@@ -147,7 +147,7 @@
       "Type" : "AWS::EC2::SecurityGroup",                                       
       "Properties" : {
         "VpcId" : { "Ref" : "VPC" },                                            
-        "GroupDescription" : "Enable SSH and access and Puppetmaster ports",
+        "GroupDescription" : "Enable SSH and access and other test ports",
         "SecurityGroupIngress" : [                                              
           { 
             "IpProtocol" : "tcp",
@@ -157,16 +157,16 @@
           },
              { 
             "IpProtocol" : "tcp",
-            "FromPort"   : "8140",
-            "ToPort"     : "8140",
+            "FromPort"   : "80",
+            "ToPort"     : "80",
             "CidrIp"     : "0.0.0.0/0"
           },
-             { 
+                       { 
             "IpProtocol" : "tcp",
-            "FromPort"   : "443",
-            "ToPort"     : "443",
+            "FromPort"   : "8080",
+            "ToPort"     : "8080",
             "CidrIp"     : "0.0.0.0/0"
-          }
+          },
         ]                                                                       
       }                                                                         
     }, 
@@ -237,7 +237,7 @@
 
   "Outputs" : {
     "Instance" : {
-      "Value" : { "Fn::GetAtt" : [ "PuppetServer", "PublicDnsName" ] },
+      "Value" : { "Fn::GetAtt" : [ "PuppetClient, "PublicDnsName" ] },
       "Description" : "DNS Name of the newly created EC2 instance"
     }
   }
