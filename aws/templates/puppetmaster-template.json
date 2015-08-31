@@ -101,6 +101,8 @@
 		  "sudo yum -y install git\n",
 		  "sudo yum -y install make\n",
 		  "sudo yum -y install gcc\n",
+      "sudo hostname puppetmaster",
+      "sudo rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm",
       "sudo yum install -y curl\n",
       "sudo yum install -y nano\n",
       "sudo yum install -y htop\n",
@@ -153,6 +155,12 @@
             "IpProtocol" : "tcp",
             "FromPort"   : "22",
             "ToPort"     : "22",
+            "CidrIp"     : "0.0.0.0/0"
+          },
+                       { 
+            "IpProtocol" : "tcp",
+            "FromPort"   : "3000",
+            "ToPort"     : "3000",
             "CidrIp"     : "0.0.0.0/0"
           },
              { 

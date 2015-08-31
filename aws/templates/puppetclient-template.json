@@ -166,9 +166,9 @@
             "FromPort"   : "8080",
             "ToPort"     : "8080",
             "CidrIp"     : "0.0.0.0/0"
-          },
-        ]                                                                       
-      }                                                                         
+          }
+        ]                                                                     
+      }                                                                        
     }, 
 
     "VPC" : {                                                                   
@@ -237,7 +237,7 @@
 
   "Outputs" : {
     "Instance" : {
-      "Value" : { "Fn::GetAtt" : [ "PuppetClient, "PublicDnsName" ] },
+      "Value" : { "Fn::GetAtt" : [ "PuppetClient", "PublicDnsName" ] },
       "Description" : "DNS Name of the newly created EC2 instance"
     }
   }

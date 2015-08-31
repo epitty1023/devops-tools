@@ -130,7 +130,7 @@ fi
 function pm_install {
     if [ ${PMB_TEST} -eq 1 ]
     then
-        echo "yum -y install puppet puppetserver"
+        echo "yum -y install puppet puppetserver puppet-dashboard"
     else
         yum -y install puppet puppetserver
     fi
