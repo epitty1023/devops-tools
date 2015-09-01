@@ -106,8 +106,8 @@
       "sudo yum install -y htop\n",
       "sudo yum install -y wget\n",
       "# Install Puppet Client \n",
-      "sudo curl https://raw.githubusercontent.com/epitty1023/devops-tools/master/puppet/puppetclient-boostrap.sh |sudo -E sh\n",
-		  "sudo yum -y install java-1.6.0-openjdk\n",
+      "sudo yum install -y puppet\n",
+      "sudo yum -y install java-1.6.0-openjdk\n",
       "sudo yum update -y aws-cfn-bootstrap\n",
 
 		  "# Move Ruby 1.9.3 to Default Ruby\n",
