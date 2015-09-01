@@ -107,8 +107,8 @@
 	"sudo yum install -y wget\n",
 	"# Install Puppet Client \n",
 	"sudo yum install -y puppet\n",
-	"#change name and IP address of your puppetmaster tobe added in /etc/hosts\n",      	
-	"sed -i "10.10.20.1 puppetmaster.yourcompanydomain.com" /etc/hosts\n",
+	"# Add name and IP address of your puppetmaster in /etc/hosts\n",      	
+	"sed -i "172.31.16.31 puppetmaster.yourcompanydomain.com" /etc/hosts\n",
 	"sudo yum -y install java-1.6.0-openjdk\n",
       	"sudo yum update -y aws-cfn-bootstrap\n",
 
