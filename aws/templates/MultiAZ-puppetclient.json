@@ -197,13 +197,31 @@
       "Properties" : {
         "KeyName" : { "Ref" : "KeyName" },
         "ImageId" : { "Fn::FindInMap" : [ "AWSRegionArch2AMI", { "Ref" : "AWS::Region" },
-                                          { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
+        { "Fn::FindInMap" : [ "AWSInstanceType2Arch", { "Ref" : "InstanceType" }, "Arch" ] } ] },
         "SecurityGroups" : [ { "Ref" : "InstanceSecurityGroup" } ],
         "InstanceType" : { "Ref" : "InstanceType" },
         "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
-             "#!/bin/bash -xe\n",
+             "#!/bin/bash -v\n",
+             "date > /home/ec2-user/starttime","\n",
              "yum update -y aws-cfn-bootstrap\n",
-             "curl -L https://ec2-52-88-19-120.us-west-2.compute.amazonaws.com:8140/packages/current/install.bash | sh","\n",
+
+             "# Install PuppetClient and other Packages## Change IP of puppetmaster below\n",
+             "echo 1.2.3.4 puppetmaster puppet >> /etc/hosts","\n",
+
+             "rpm -ivh https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm","\n",
+             "yum -y install puppet","\n",
+             "puppet resource package puppet ensure=latest","\n",
+             "yum -y install libxml2-devel","\n",
+             "yum -y install libxslt-devel","\n",
+             "yum -y install git","\n",
+             "yum -y install gcc","\n",
+             "yum -y install nano","\n",
+             "yum -y install wget","\n",
+
+             "#Run puppet for the first time to link to the puppetmaster","\n",
+             "puppet agent -t","\n",
+
+             "date > /home/ec2-user/stoptime","\n",
              "/opt/aws/bin/cfn-init -v ",
              "         --stack ", { "Ref" : "AWS::StackName" },
              "         --resource LaunchConfig ",
