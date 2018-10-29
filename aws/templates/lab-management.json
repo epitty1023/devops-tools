@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Onica Lab Management Role - 1.3.0
+Parameters:
+  ManagementAccountNumber:
+    Type: String
+    Default: "363639951452"
+    Description: Onica lab management account
+Resources:
+  LabManagementRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              AWS: !Sub arn:aws:iam::${ManagementAccountNumber}:root
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: !Ref 'AWS::AccountId'
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - arn:aws:iam::aws:policy/job-function/Billing
+Outputs:
+  RoleARN:
+    Value: !GetAtt 'LabManagementRole.Arn'
+    Description: ARN of the lab management role
